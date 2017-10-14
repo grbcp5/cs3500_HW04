@@ -5,6 +5,18 @@
 #include "SymbolTable.h"
 #include "SymbolTableEntry.h"
 
+
+//These are defined in a way so that a bitwise OR can be applied between 
+//them and get the correct associated type. 
+#define INT 1
+#define STR 2
+#define BOOL 4
+#define INT_OR_STR 3
+#define INT_OR_BOOL 5
+#define STR_OR_BOOL 6
+#define INT_OR_STR_BOOL 7
+
+
 int lineNum = 1;
 
 void printRule(const char* lhs, const char* rhs);
