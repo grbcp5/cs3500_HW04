@@ -29,6 +29,13 @@ public:
     else return(false);
   }
 
+  SYMBOL_TABLE_ENTRY * getIndentType(string key) {
+    map<string, SYMBOL_TABLE_ENTRY>::iterator itr;
+    if ((itr = hashTable.find(key)) == hashTable.end())
+      return(NULL);
+    else return( &(itr->second) );
+  }
+
   // If a SYMBOL_TABLE_ENTRY with name theName is
   // found in this symbol table, then return true;
   // otherwise, return false.
