@@ -27,6 +27,12 @@ void addToScope(const SYMBOL_TABLE_ENTRY entry);
 
 stack<SYMBOL_TABLE> scopeStack;
 
+typedef struct {
+  int type;
+  int numParameters;
+  int returnTypes;
+} TYPE_INFO;
+
 extern "C" {
   int yyparse(void);
   int yylex(void);
