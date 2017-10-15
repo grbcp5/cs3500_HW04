@@ -81,6 +81,8 @@ N_EXPR : N_CONST {
 } | T_IDENT {
   string identifier;
   bool idFound;
+  SYMBOL_TABLE_ENTRY * entry;
+
   printRule("EXPR", "IDENT");
   identifier = string( $1 );
   idFound = findEntryInAnyScope(identifier);
@@ -89,10 +91,17 @@ N_EXPR : N_CONST {
     return 1;
   }
 
-  
+  entry = getEntryOfIdent( identifier );
+  $$.type = entry->getTypeCode();
+  $$.numParameters = NA;
+  $$.returnType = NA;
 
 } | T_LPAREN N_PARENTHESIZED_EXPR T_RPAREN {
   printRule("EXPR", "( PARENTHESIZED_EXPR )");
+
+  $$.type = $1.type;
+  $$.numParameters = $1.numParameters;
+  $$.returnType = $1.returnType;
 };
 
 N_CONST : T_INTCONST {
