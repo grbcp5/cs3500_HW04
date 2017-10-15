@@ -8,6 +8,7 @@
 
 //These are defined in a way so that a bitwise OR can be applied between 
 //them and get the correct associated type. 
+#define NA -1;
 #define INT 1
 #define STR 2
 #define BOOL 4
