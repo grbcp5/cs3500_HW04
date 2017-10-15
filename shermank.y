@@ -8,7 +8,7 @@
 
 //These are defined in a way so that a bitwise OR can be applied between 
 //them and get the correct associated type. 
-#define NA -1;
+#define NA -1
 #define INT 1
 #define STR 2
 #define BOOL 4
@@ -176,7 +176,7 @@ N_ID_EXPR_LIST : {
     yyerror( "Multiply defined identifier" );
     return 1;
   } else {
-    addToScope( SYMBOL_TABLE_ENTRY( identifier, UNDEFINED ) );
+    addToScope( SYMBOL_TABLE_ENTRY( identifier, NA ) );
   }
 };
 
@@ -209,7 +209,7 @@ N_ID_LIST : {
     yyerror("Multiply defined identifier");
     return 1;
   } else {
-    addToScope(SYMBOL_TABLE_ENTRY(identifier, UNDEFINED));
+    addToScope(SYMBOL_TABLE_ENTRY(identifier, NA ) );
   }
 };
 
