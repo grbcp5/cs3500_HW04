@@ -26,6 +26,8 @@ void endScope();
 bool findEntryInAnyScope(const string ident);
 void addToScope(const SYMBOL_TABLE_ENTRY entry);
 
+int getEntryOfIdent( string ident );
+
 stack<SYMBOL_TABLE> scopeStack;
 
 typedef struct {
@@ -86,6 +88,9 @@ N_EXPR : N_CONST {
     yyerror("Undefined identifier");
     return 1;
   }
+
+  
+
 } | T_LPAREN N_PARENTHESIZED_EXPR T_RPAREN {
   printRule("EXPR", "( PARENTHESIZED_EXPR )");
 };
@@ -176,7 +181,7 @@ N_ID_EXPR_LIST : {
     yyerror( "Multiply defined identifier" );
     return 1;
   } else {
-    addToScope( SYMBOL_TABLE_ENTRY( identifier, NA ) );
+    addToScope( SYMBOL_TABLE_ENTRY( identifier, $4.type ) );
   }
 };
 
@@ -209,7 +214,7 @@ N_ID_LIST : {
     yyerror("Multiply defined identifier");
     return 1;
   } else {
-    addToScope(SYMBOL_TABLE_ENTRY(identifier, NA ) );
+    addToScope(SYMBOL_TABLE_ENTRY(identifier, ( INT | STR | BOOL ) ) );
   }
 };
 
@@ -309,6 +314,25 @@ bool findEntryInAnyScope( const string ident ) {
     scopeStack.push( st );
     return(found);
   }
+}
+
+SYMBOL_TABLE_ENTRY * getEntryOfIdent( string ident ) {
+  SYMBOL_TABLE_ENTRY * entry;
+  SYMBOL_TABLE st;
+  if(scopeStack.empty()) {
+    return false;
+  }
+  entry = scopeStack.top().getEntry( ident );
+  if( entry != null ) {
+    return entry;
+  } else {
+    st = scopeStack.top();
+    scopeStack.pop();
+    entry = getEntryOfIdent( ident );
+    scopeStack.push( st );
+    return(entry);
+  }
+
 }
 
 void addToScope( const SYMBOL_TABLE_ENTRY entry ) {
