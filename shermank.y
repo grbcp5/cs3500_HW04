@@ -34,6 +34,10 @@ typedef struct {
   int returnTypes;
 } TYPE_INFO;
 
+typedef struct {
+  int len;
+} LIST;
+
 extern "C" {
   int yyparse(void);
   int yylex(void);
@@ -45,10 +49,12 @@ extern "C" {
 %union {
   char* text;
   TYPE_INFO typeInfo;
+  LIST list;
 }
 
 %type <text> T_IDENT
 %type <typeInfo> N_CONST N_EXPR N_PARENTHESIZED_EXPR N_IF_EXP
+%type <list> N_ID_LIST
 
 %token T_LETSTAR T_LAMBDA T_INPUT T_PRINT T_IF T_LPAREN T_RPAREN T_ADD
 %token T_MULT T_DIV T_SUB T_AND T_OR T_NOT T_LT T_GT T_LE T_GE T_EQ
@@ -125,8 +131,18 @@ N_PARENTHESIZED_EXPR : N_ARITHLOGIC_EXPR {
   printRule("PARENTHESIZED_EXPR", "LAMBDA_EXPR");
 } | N_PRINT_EXPR {
   printRule("PARENTHESIZED_EXPR", "PRINT_EXPR");
+
+  $$.type = FUNC;
+  $$.numParameters = NA;
+  $$.returnType = NA;
+
 } | N_INPUT_EXPR {
   printRule("PARENTHESIZED_EXPR", "INPUT_EXPR");
+
+  $$.type = ( INT | STR );
+  $$.numParameters = NA;
+  $$.returnType = NA;
+
 } | N_EXPR_LIST {
   printRule("PARENTHESIZED_EXPR", "EXPR_LIST");
 };
@@ -166,14 +182,24 @@ N_ID_EXPR_LIST : {
 
 N_LAMBDA_EXPR : T_LAMBDA T_LPAREN N_ID_LIST T_RPAREN N_EXPR {
   printRule("LAMBDA_EXPR", "lambda ( ID_LIST ) EXPR");
+
+  $$.type = FUNC;
+  $$.numParameters = $3.len;
+  $$.returnType = $5.type;
+
   endScope();
 };
 
 N_ID_LIST : {
   printRule("ID_LIST", "epsilon");
+
+  $$.len = 0;
+
 } | N_ID_LIST T_IDENT {
   string identifier;
   bool idFound;
+
+  $$.len = $1.len + 1;
   printRule("ID_LIST", "ID_LIST IDENT");
   identifier = string( $2 );
   idFound = scopeStack.top().findEntry(identifier);
