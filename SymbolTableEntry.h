@@ -9,7 +9,7 @@ using namespace std;
 typedef struct {
   int type;
   int numParameters;
-  int returnTypes;
+  int returnType;
 } TYPE_INFO;
 
 class SYMBOL_TABLE_ENTRY 
@@ -27,6 +27,8 @@ public:
   {
     name = theName;
     typeInfo.type = theType;
+    typeInfo.returnType = UNDEFINED;
+    typeInfo.numParameters = UNDEFINED;
   }
 
   SYMBOL_TABLE_ENTRY( const string theName, const TYPE_INFO type ) {
