@@ -65,6 +65,11 @@ N_START : N_EXPR {
 
 N_EXPR : N_CONST {
   printRule("EXPR", "CONST");
+
+  $$.type = $1.type;
+  $$.numParameters = $1.numParameters;
+  $$.returnType = $1.returnType;
+
 } | T_IDENT {
   string identifier;
   bool idFound;
@@ -81,12 +86,33 @@ N_EXPR : N_CONST {
 
 N_CONST : T_INTCONST {
   printRule("CONST", "INTCONST");
+
+  $$.type = INT;
+  $$.numParameters = NA;
+  $$.returnType = NA;
+
 } | T_STRCONST {
   printRule("CONST", "STRCONST");
+
+  $$.type = STR;
+  $$.numParameters = NA;
+  $$.returnType = NA;
+
+
 } | T_T {
   printRule("CONST", "t");
+
+  $$.type = BOOL;
+  $$.numParameters = NA;
+  $$.returnType = NA;
+
 } | T_NIL {
   printRule("CONST", "nil");
+
+  $$.type = BOOL;
+  $$.numParameters = NA;
+  $$.returnType = NA;
+
 };
 
 N_PARENTHESIZED_EXPR : N_ARITHLOGIC_EXPR {
