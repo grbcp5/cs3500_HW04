@@ -41,8 +41,10 @@ extern "C" {
 }
 
 %} 
+
 %union {
   char* text;
+  TYPE_INFO typeInfo;
 }
 
 %type <text> T_IDENT
