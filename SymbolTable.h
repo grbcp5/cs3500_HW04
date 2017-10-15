@@ -29,7 +29,7 @@ public:
     else return(false);
   }
 
-  SYMBOL_TABLE_ENTRY * getIndentType(string key) {
+  SYMBOL_TABLE_ENTRY * getEntry(string key) {
     map<string, SYMBOL_TABLE_ENTRY>::iterator itr;
     if ((itr = hashTable.find(key)) == hashTable.end())
       return(NULL);
