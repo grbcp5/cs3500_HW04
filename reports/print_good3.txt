@@ -1,0 +1,35 @@
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+TOKEN: PRINT     LEXEME: print					TOKEN: PRINT     LEXEME: print
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+TOKEN: LETSTAR   LEXEME: let*					TOKEN: LETSTAR   LEXEME: let*
+							      >
+___Entering new scope...					___Entering new scope...
+
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+ID_EXPR_LIST -> epsilon						ID_EXPR_LIST -> epsilon
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+TOKEN: IDENT     LEXEME: s					TOKEN: IDENT     LEXEME: s
+TOKEN: STRCONST  LEXEME: "kitty paws"				TOKEN: STRCONST  LEXEME: "kitty paws"
+CONST -> STRCONST						CONST -> STRCONST
+EXPR -> CONST							EXPR -> CONST
+TOKEN: RPAREN    LEXEME: )					TOKEN: RPAREN    LEXEME: )
+ID_EXPR_LIST -> ID_EXPR_LIST ( IDENT EXPR )			ID_EXPR_LIST -> ID_EXPR_LIST ( IDENT EXPR )
+___Adding s to symbol table					___Adding s to symbol table
+TOKEN: RPAREN    LEXEME: )					TOKEN: RPAREN    LEXEME: )
+TOKEN: IDENT     LEXEME: s					TOKEN: IDENT     LEXEME: s
+EXPR -> IDENT							EXPR -> IDENT
+LET_EXPR -> let* ( ID_EXPR_LIST ) EXPR				LET_EXPR -> let* ( ID_EXPR_LIST ) EXPR
+
+___Exiting scope...						___Exiting scope...
+
+PARENTHESIZED_EXPR -> LET_EXPR					PARENTHESIZED_EXPR -> LET_EXPR
+TOKEN: RPAREN    LEXEME: )					TOKEN: RPAREN    LEXEME: )
+EXPR -> ( PARENTHESIZED_EXPR )					EXPR -> ( PARENTHESIZED_EXPR )
+PRINT_EXPR -> print EXPR					PRINT_EXPR -> print EXPR
+PARENTHESIZED_EXPR -> PRINT_EXPR				PARENTHESIZED_EXPR -> PRINT_EXPR
+TOKEN: RPAREN    LEXEME: )					TOKEN: RPAREN    LEXEME: )
+EXPR -> ( PARENTHESIZED_EXPR )					EXPR -> ( PARENTHESIZED_EXPR )
+START -> EXPR							START -> EXPR
+
+---- Completed parsing ----					---- Completed parsing ----
+

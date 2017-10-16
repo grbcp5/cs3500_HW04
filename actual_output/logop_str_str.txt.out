@@ -1,0 +1,9 @@
+TOKEN: LPAREN    LEXEME: (
+TOKEN: OR        LEXEME: or
+LOG_OP -> or
+BIN_OP -> LOG_OP
+TOKEN: STRCONST  LEXEME: "one" "two"
+CONST -> STRCONST
+EXPR -> CONST
+TOKEN: RPAREN    LEXEME: )
+Line 1: syntax error

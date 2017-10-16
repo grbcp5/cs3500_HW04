@@ -1,0 +1,31 @@
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+TOKEN: LETSTAR   LEXEME: let*					TOKEN: LETSTAR   LEXEME: let*
+							      >
+___Entering new scope...					___Entering new scope...
+
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+ID_EXPR_LIST -> epsilon						ID_EXPR_LIST -> epsilon
+TOKEN: RPAREN    LEXEME: )					TOKEN: RPAREN    LEXEME: )
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+TOKEN: LAMBDA    LEXEME: lambda					TOKEN: LAMBDA    LEXEME: lambda
+							      >
+___Entering new scope...					___Entering new scope...
+
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+ID_LIST -> epsilon						ID_LIST -> epsilon
+TOKEN: RPAREN    LEXEME: )					TOKEN: RPAREN    LEXEME: )
+TOKEN: INTCONST  LEXEME: 42					TOKEN: INTCONST  LEXEME: 42
+CONST -> INTCONST						CONST -> INTCONST
+EXPR -> CONST							EXPR -> CONST
+LAMBDA_EXPR -> lambda ( ID_LIST ) EXPR				LAMBDA_EXPR -> lambda ( ID_LIST ) EXPR
+
+___Exiting scope...						___Exiting scope...
+
+PARENTHESIZED_EXPR -> LAMBDA_EXPR				PARENTHESIZED_EXPR -> LAMBDA_EXPR
+TOKEN: RPAREN    LEXEME: )					TOKEN: RPAREN    LEXEME: )
+EXPR -> ( PARENTHESIZED_EXPR )					EXPR -> ( PARENTHESIZED_EXPR )
+LET_EXPR -> let* ( ID_EXPR_LIST ) EXPR				LET_EXPR -> let* ( ID_EXPR_LIST ) EXPR
+Line 3: Arg 1 cannot be a funciton			      |
+							      >	___Exiting scope...
+							      >
+							      >	Line 2: Arg 2 cannot be function

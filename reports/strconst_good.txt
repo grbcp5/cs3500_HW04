@@ -1,0 +1,7 @@
+TOKEN: STRCONST  LEXEME: "hello kitty"				TOKEN: STRCONST  LEXEME: "hello kitty"
+CONST -> STRCONST						CONST -> STRCONST
+EXPR -> CONST							EXPR -> CONST
+START -> EXPR							START -> EXPR
+
+---- Completed parsing ----					---- Completed parsing ----
+

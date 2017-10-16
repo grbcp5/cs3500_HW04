@@ -1,0 +1,6 @@
+(
+	(lambda () 
+		( print (input) )
+	)
+)
+

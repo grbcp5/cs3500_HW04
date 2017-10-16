@@ -1,0 +1,12 @@
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+TOKEN: EQ        LEXEME: =					TOKEN: EQ        LEXEME: =
+REL_OP -> =							REL_OP -> =
+BIN_OP -> REL_OP						BIN_OP -> REL_OP
+TOKEN: INTCONST  LEXEME: 0					TOKEN: INTCONST  LEXEME: 0
+CONST -> INTCONST						CONST -> INTCONST
+EXPR -> CONST							EXPR -> CONST
+TOKEN: NIL       LEXEME: nil					TOKEN: NIL       LEXEME: nil
+CONST -> nil							CONST -> nil
+EXPR -> CONST							EXPR -> CONST
+ARITHLOGIC_EXPR -> BIN_OP EXPR EXPR				ARITHLOGIC_EXPR -> BIN_OP EXPR EXPR
+Line 1: Arg 2 must be an int				      |	Line 1: Arg 2 must be integer or string

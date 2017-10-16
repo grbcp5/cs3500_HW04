@@ -1,0 +1,25 @@
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+TOKEN: LETSTAR   LEXEME: let*					TOKEN: LETSTAR   LEXEME: let*
+							      >
+___Entering new scope...					___Entering new scope...
+
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+ID_EXPR_LIST -> epsilon						ID_EXPR_LIST -> epsilon
+TOKEN: RPAREN    LEXEME: )					TOKEN: RPAREN    LEXEME: )
+TOKEN: LPAREN    LEXEME: (					TOKEN: LPAREN    LEXEME: (
+TOKEN: INPUT     LEXEME: input					TOKEN: INPUT     LEXEME: input
+INPUT_EXPR -> input						INPUT_EXPR -> input
+PARENTHESIZED_EXPR -> INPUT_EXPR				PARENTHESIZED_EXPR -> INPUT_EXPR
+TOKEN: RPAREN    LEXEME: )					TOKEN: RPAREN    LEXEME: )
+EXPR -> ( PARENTHESIZED_EXPR )					EXPR -> ( PARENTHESIZED_EXPR )
+LET_EXPR -> let* ( ID_EXPR_LIST ) EXPR				LET_EXPR -> let* ( ID_EXPR_LIST ) EXPR
+
+___Exiting scope...						___Exiting scope...
+
+PARENTHESIZED_EXPR -> LET_EXPR					PARENTHESIZED_EXPR -> LET_EXPR
+TOKEN: RPAREN    LEXEME: )					TOKEN: RPAREN    LEXEME: )
+EXPR -> ( PARENTHESIZED_EXPR )					EXPR -> ( PARENTHESIZED_EXPR )
+START -> EXPR							START -> EXPR
+
+---- Completed parsing ----					---- Completed parsing ----
+

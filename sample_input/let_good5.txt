@@ -1,0 +1,6 @@
+(
+	let* ( 
+		(s "kitty paws")
+     	)
+  	s
+)
