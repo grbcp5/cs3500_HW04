@@ -36,6 +36,7 @@ stack<SYMBOL_TABLE> scopeStack;
 
 typedef struct {
   int len;
+  int type;
 } LIST;
 
 typedef struct {
@@ -68,6 +69,7 @@ extern "C" {
 %type <typeInfo> N_INPUT_EXPR
 %type <typeInfo> N_LET_EXPR
 %type <list> N_ID_LIST
+%type <list> N_EXPR_LIST
 %type <binOpType> N_BIN_OP
 
 %token T_LETSTAR T_LAMBDA T_INPUT T_PRINT T_IF T_LPAREN T_RPAREN T_ADD
@@ -409,10 +411,21 @@ N_INPUT_EXPR : T_INPUT {
 
 N_EXPR_LIST : N_EXPR N_EXPR_LIST {
   printRule("EXPR_LIST", "EXPR EXPR_LIST");
-
-  
-
+  if($1.type == FUNC) {
+    if($2.len > $1.numParameters) {
+      yyerror("Too many parameters in function call.");
+      return 1;
+    }
+    else if($2.len < $1.numParameters) {
+      yyerror("Too few parameters in function call.");
+      return 1;
+    }
+    $$.type = $1.returnType;
+  } else {
+    $$.len = $2.len + 1;
+  }
 } | N_EXPR {
+  $$.len = 1;
   printRule("EXPR_LIST", "EXPR");
 };
 
