@@ -223,14 +223,14 @@ N_ARITHLOGIC_EXPR : N_UN_OP N_EXPR {
       
       if( !( $2.type & INT ) ) {
          
-        yyerror( "Arg 1 must be an int" );
+        yyerror( "Arg 1 must be integer" );
         return 1;
           
       } 
       
       if ( !( $3.type & INT ) ) {
         
-        yyerror( "Arg 2 must be an int" );
+        yyerror( "Arg 2 must be integer" );
         return 1;
          
       }
@@ -243,7 +243,7 @@ N_ARITHLOGIC_EXPR : N_UN_OP N_EXPR {
 
         if( !( $3.type & INT ) ) {
           
-          yyerror( "Arg 2 must be an int" );
+          yyerror( "Arg 2 must be integer" );
           return 1;
 
         }
@@ -251,7 +251,7 @@ N_ARITHLOGIC_EXPR : N_UN_OP N_EXPR {
       } else if ( $2.type & STR ) {
 
         if( !( $3.type & STR )  ) {
-          yyerror( "Arg 2 must be a string" );
+          yyerror( "Arg 2 must be string" );
           return 1;
         }
 
@@ -265,12 +265,12 @@ N_ARITHLOGIC_EXPR : N_UN_OP N_EXPR {
 
       if( $2.type & FUNC ) {
 
-        yyerror( "Arg 1 can not be a funciton" );
+        yyerror( "Arg 1 can not be funciton" );
         return 1;
 
       } else if( $3.type & FUNC ) {
 
-        yyerror( "Arg 2 can not be a function" );
+        yyerror( "Arg 2 can not be function" );
         return 1;
 
       }
@@ -290,21 +290,21 @@ N_IF_EXPR : T_IF N_EXPR N_EXPR N_EXPR {
 
   if( $2.type & FUNC ) {
 
-    yyerror( "Arg 1 cannot be a function" );
+    yyerror( "Arg 1 cannot be function" );
     return 1;
  
   }
 
   if( $3.type & FUNC ) {
 
-    yyerror( "Arg 1 cannot be a funciton" );
+    yyerror( "Arg 1 cannot be funciton" );
     return 1;
   
   } 
   
   if ( $4.type & FUNC ) {
     
-    yyerror( "Arg 2 cannot be a funciton" );
+    yyerror( "Arg 2 cannot be funciton" );
     return 1;
 
   }
@@ -320,7 +320,7 @@ N_LET_EXPR : T_LETSTAR T_LPAREN N_ID_EXPR_LIST T_RPAREN N_EXPR {
 
   if( $5.type & FUNC ) {
 
-    yyerror( "Arg 1 cannot be a funciton" );
+    yyerror( "Arg 1 cannot be funciton" );
     return 1;
 
   }
@@ -389,7 +389,7 @@ N_PRINT_EXPR : T_PRINT N_EXPR {
 
   if( $2.type & FUNC ) {
 
-    yyerror( "Arg 1 cannot be a function" );
+    yyerror( "Arg 1 cannot be function" );
     return 1;
 
   }
