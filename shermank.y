@@ -112,10 +112,6 @@ N_EXPR : N_CONST {
   $$.numParameters = entry->getTypeInfo().numParameters;
   $$.returnType = entry->getTypeInfo().returnType;
 
-  if( identifier == "f0" ) {
-    cout << "F0 num args: " << entry->getTypeInfo().numParameters << endl;
-  }
-
 } | T_LPAREN N_PARENTHESIZED_EXPR T_RPAREN {
   printRule("EXPR", "( PARENTHESIZED_EXPR )");
 
@@ -227,20 +223,20 @@ N_ARITHLOGIC_EXPR : N_UN_OP N_EXPR {
     case TYPE_ARITH_OP:
       $$.type = INT;
       
-      if( !( $2.type & INT ) ) {
-         
+      if( ( $2.type & INT ) ) {
+       
+        if( $3.type & INT ) {
+
+        } else {
+          yyerror( "Arg 2 must be integer" );
+          return 1;
+        }
+
+      } else { 
         yyerror( "Arg 1 must be integer" );
         return 1;
-          
-      } 
-      
-      if ( !( $3.type & INT ) ) {
-        
-        yyerror( "Arg 2 must be integer" );
-        return 1;
-         
       }
-      
+     
       break;
 
     case TYPE_REL_OP:
@@ -271,12 +267,12 @@ N_ARITHLOGIC_EXPR : N_UN_OP N_EXPR {
 
       if( $2.type & FUNC ) {
 
-        yyerror( "Arg 1 can not be funciton" );
+        yyerror( "Arg 1 cannot be function" );
         return 1;
 
       } else if( $3.type & FUNC ) {
 
-        yyerror( "Arg 2 can not be function" );
+        yyerror( "Arg 2 cannot be function" );
         return 1;
 
       }
@@ -425,11 +421,11 @@ N_EXPR_LIST : N_EXPR N_EXPR_LIST {
   printRule("EXPR_LIST", "EXPR EXPR_LIST");
   if($1.type == FUNC) {
     if($2.len > $1.numParameters) {
-      yyerror("Too many parameters in function call.");
+      yyerror("Too many parameters in function call");
       return 1;
     }
     else if($2.len < $1.numParameters) {
-      yyerror("Too few parameters in function call.");
+      yyerror("Too few parameters in function call");
       return 1;
     }
     $$.type = $1.returnType;
@@ -524,7 +520,7 @@ void printTokenInfo(const char* tokenType, const char* lexeme) {
 
 void startScope() {
   scopeStack.push(SYMBOL_TABLE());
-  printf("___Entering new scope...\n\n");
+  printf("\n___Entering new scope...\n\n");
 }
 
 bool findEntryInAnyScope( const string ident ) {
