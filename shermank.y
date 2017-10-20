@@ -105,10 +105,16 @@ N_EXPR : N_CONST {
     return 1;
   }
 
+  
+
   entry = getEntryOfIdent( identifier );
   $$.type = entry->getTypeCode();
   $$.numParameters = entry->getTypeInfo().numParameters;
   $$.returnType = entry->getTypeInfo().returnType;
+
+  if( identifier == "f0" ) {
+    cout << "F0 num args: " << entry->getTypeInfo().numParameters << endl;
+  }
 
 } | T_LPAREN N_PARENTHESIZED_EXPR T_RPAREN {
   printRule("EXPR", "( PARENTHESIZED_EXPR )");
@@ -320,9 +326,15 @@ N_LET_EXPR : T_LETSTAR T_LPAREN N_ID_EXPR_LIST T_RPAREN N_EXPR {
 
   if( $5.type & FUNC ) {
 
-    yyerror( "Arg 1 cannot be funciton" );
-    return 1;
-
+    if( ( $5.returnType & FUNC || $5.returnType == NA ) ) {
+      yyerror( "Arg 1 cannot be funciton" );
+      return 1;
+    } else {
+      $$.type = $5.returnType;
+      $$.numParameters = NA;
+      $$.returnType = NA;
+    }
+    
   }
 
   $$.type = $5.type;
@@ -426,6 +438,23 @@ N_EXPR_LIST : N_EXPR N_EXPR_LIST {
   }
 } | N_EXPR {
   $$.len = 1;
+
+  /*
+  if($1.type == FUNC) {
+    if($1.numParameters == 0) {
+      $$.type |= $1.returnType;
+    } else {
+      cout << "Expr: " << $1.      
+      cout << "Num expected params: " << $1.numParameters << endl;
+      
+      yyerror("Too few paramters in function call.");
+      return 1;
+    }
+  }
+  */
+
+  // Add type?
+
   printRule("EXPR_LIST", "EXPR");
 };
 
