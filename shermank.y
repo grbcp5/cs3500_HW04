@@ -241,25 +241,28 @@ N_ARITHLOGIC_EXPR : N_UN_OP N_EXPR {
 
     case TYPE_REL_OP:
       
-      if( $2.type & INT ) {
-
-        if( !( $3.type & INT ) ) {
-          
-          yyerror( "Arg 2 must be integer" );
-          return 1;
-
-        }
-
-      } else if ( $2.type & STR ) {
-
-        if( !( $3.type & STR )  ) {
-          yyerror( "Arg 2 must be string" );
-          return 1;
-        }
-
-      } else {
+      if( !($2.type & (INT | STR)) ) {
+	yyerror( "Arg 1 must be integer or string" );
+        return 1;
+      } 
         
-        yyerror( "Arg 1 must be integer or string" );
+      if( !($3.type & (INT | STR)) ) {
+        yyerror( "Arg 2 must be integer or string" );
+        return 1;
+      }
+
+      if(($2.type & INT) && !( $3.type & INT )) { 
+        yyerror( "Arg 2 must be integer" );
+        return 1;
+      }
+
+      if (($2.type & STR) && !( $3.type & STR )) {
+        yyerror( "Arg 2 must be string" );
+        return 1;
+      }
+
+      if( !($3.type & (INT | STR)) ) {
+        yyerror( "Arg 2 must be integer or string" );
         return 1;
       }
 
@@ -299,14 +302,14 @@ N_IF_EXPR : T_IF N_EXPR N_EXPR N_EXPR {
 
   if( $3.type & FUNC ) {
 
-    yyerror( "Arg 1 cannot be funciton" );
+    yyerror( "Arg 2 cannot be function" );
     return 1;
   
   } 
   
   if ( $4.type & FUNC ) {
     
-    yyerror( "Arg 2 cannot be funciton" );
+    yyerror( "Arg 3 cannot be function" );
     return 1;
 
   }
@@ -321,18 +324,11 @@ N_LET_EXPR : T_LETSTAR T_LPAREN N_ID_EXPR_LIST T_RPAREN N_EXPR {
   printRule("LET_EXPR", "let* ( ID_EXPR_LIST ) EXPR");
 
   endScope();
-
-  if( $5.type & FUNC ) {
-
-    if( ( $5.returnType & FUNC || $5.returnType == NA ) ) {
-      yyerror( "Arg 1 cannot be funciton" );
+  if( $5.type & FUNC) {
+    if ($5.returnType & NA) {
+      yyerror( "Arg 2 cannot be function" );
       return 1;
-    } else {
-      $$.type = $5.returnType;
-      $$.numParameters = NA;
-      $$.returnType = NA;
     }
-    
   }
 
   $$.type = $5.type;
@@ -436,27 +432,16 @@ N_EXPR_LIST : N_EXPR N_EXPR_LIST {
     $$.type = $1.returnType;
   } else {
     $$.len = $2.len + 1;
+    $$.type = $1.type;
   }
 } | N_EXPR {
-  $$.len = 1;
-
-  /*
-  if($1.type == FUNC) {
-    if($1.numParameters == 0) {
-      $$.type |= $1.returnType;
-    } else {
-      cout << "Expr: " << $1.      
-      cout << "Num expected params: " << $1.numParameters << endl;
-      
-      yyerror("Too few paramters in function call.");
-      return 1;
-    }
-  }
-  */
-
-  // Add type?
-
   printRule("EXPR_LIST", "EXPR");
+  $$.len = 1;
+  if($1.type & FUNC) {
+    $$.type = $1.returnType;
+  } else {
+    $$.type = $1.type;
+  }
 };
 
 N_BIN_OP : N_ARITH_OP {
