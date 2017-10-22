@@ -8,7 +8,7 @@ LETTER	[a-zA-Z]
 DIGIT	[0-9]
 IDENT	(_|{LETTER})({LETTER}|{DIGIT}|_)*
 INTCONST	(\+|-)?{DIGIT}+
-STRCONST	\".*\"
+STRCONST	\"(\\.|[^\\"])*\"
 COMMENT	;.*
 
 %%
