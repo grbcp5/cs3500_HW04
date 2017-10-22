@@ -320,6 +320,8 @@ N_IF_EXPR : T_IF N_EXPR N_EXPR N_EXPR {
 N_LET_EXPR : T_LETSTAR T_LPAREN N_ID_EXPR_LIST T_RPAREN N_EXPR {
   printRule("LET_EXPR", "let* ( ID_EXPR_LIST ) EXPR");
 
+  endScope();
+
   if( $5.type & FUNC ) {
 
     if( ( $5.returnType & FUNC || $5.returnType == NA ) ) {
@@ -337,8 +339,6 @@ N_LET_EXPR : T_LETSTAR T_LPAREN N_ID_EXPR_LIST T_RPAREN N_EXPR {
   $$.numParameters = NA;
   $$.returnType = NA;
 
-
-  endScope();
 };
 
 N_ID_EXPR_LIST : {
@@ -362,11 +362,16 @@ N_ID_EXPR_LIST : {
 N_LAMBDA_EXPR : T_LAMBDA T_LPAREN N_ID_LIST T_RPAREN N_EXPR {
   printRule("LAMBDA_EXPR", "lambda ( ID_LIST ) EXPR");
 
+  endScope();
+
+  if( $5.type & FUNC ) {
+    yyerror( "Arg 2 cannot be function" );
+    return 1;
+  }
+
   $$.type = FUNC;
   $$.numParameters = $3.len;
   $$.returnType = $5.type;
-
-  endScope();
 };
 
 N_ID_LIST : {
